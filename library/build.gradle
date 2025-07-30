@@ -1,0 +1,52 @@
+plugins {
+    id 'com.android.library'
+    id 'maven-publish'
+}
+
+android {
+    namespace 'com.appstronautstudios.consentmanager'
+    compileSdk 34
+    defaultConfig {
+        minSdkVersion 23
+        targetSdkVersion 34
+        consumerProguardFiles 'consumer-rules.pro'
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+                groupId = 'com.github.appstronautstudios'
+                artifactId = 'repeatingalarmmanager'
+                version = '0.3.0'
+            }
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'com.google.android.ump:user-messaging-platform:3.2.0'
+    implementation 'com.karumi:dexter:6.2.2'
+}
