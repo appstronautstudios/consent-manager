@@ -36,8 +36,8 @@ afterEvaluate {
             release(MavenPublication) {
                 from components.release
                 groupId = 'com.github.appstronautstudios'
-                artifactId = 'repeatingalarmmanager'
-                version = '0.3.0'
+                artifactId = 'consentmanager'
+                version = '0.0.1'
             }
         }
     }
@@ -48,5 +48,4 @@ dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation 'com.google.android.ump:user-messaging-platform:3.2.0'
-    implementation 'com.karumi:dexter:6.2.2'
 }
