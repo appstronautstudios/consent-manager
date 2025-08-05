@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Handler;
 import android.os.Looper;
 
+import com.google.android.ump.ConsentDebugSettings;
 import com.google.android.ump.ConsentInformation;
 import com.google.android.ump.ConsentRequestParameters;
 import com.google.android.ump.UserMessagingPlatform;
@@ -26,8 +27,7 @@ public class ConsentManager {
         return instance;
     }
 
-    public void initialize(Activity activity, Runnable onConsentResolved) {
-
+    public void initialize(Activity activity, boolean debugMode, Runnable onConsentResolved) {
         if (isInitialized || isInitializing) {
             return;
         }
@@ -35,21 +35,23 @@ public class ConsentManager {
         isInitializing = true;
         consentInformation = UserMessagingPlatform.getConsentInformation(activity);
 
-        ConsentRequestParameters params = new ConsentRequestParameters
-                .Builder()
-                .setTagForUnderAgeOfConsent(false)
-                .build();
-
-        //TEST EEA CONSENT OUTSIDE OF EURO
-//        ConsentDebugSettings debugSettings = new ConsentDebugSettings.Builder(activity)
-//                .setDebugGeography(ConsentDebugSettings.DebugGeography.DEBUG_GEOGRAPHY_EEA) // Force EEA behavior
-//                .build();
-//
-//        ConsentRequestParameters params = new ConsentRequestParameters
-//                .Builder()
-//                .setTagForUnderAgeOfConsent(false)
-//                .setConsentDebugSettings(debugSettings)
-//                .build();
+        ConsentRequestParameters params;
+        if (debugMode) {
+            // debug EEA consent outside of EU
+            ConsentDebugSettings debugSettings = new ConsentDebugSettings.Builder(activity)
+                    .setDebugGeography(ConsentDebugSettings.DebugGeography.DEBUG_GEOGRAPHY_EEA) // Force EEA behavior
+                    .build();
+            params = new ConsentRequestParameters
+                    .Builder()
+                    .setTagForUnderAgeOfConsent(false)
+                    .setConsentDebugSettings(debugSettings)
+                    .build();
+        } else {
+            params = new ConsentRequestParameters
+                    .Builder()
+                    .setTagForUnderAgeOfConsent(false)
+                    .build();
+        }
 
         consentInformation.requestConsentInfoUpdate(
                 activity,

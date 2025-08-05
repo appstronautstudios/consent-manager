@@ -32,7 +32,7 @@ public class ConsentManagerDemo extends MultiDexApplication {
 
             @Override
             public void onActivityStarted(@NonNull Activity activity) {
-                ConsentManager.getInstance().initialize(activity, () -> {
+                ConsentManager.getInstance().initialize(activity, true, () -> {
                     // POST CONSENT CODE WOULD GO HERE
                     Toast.makeText(ConsentManagerDemo.this, "consent complete", Toast.LENGTH_LONG).show();
                 });
